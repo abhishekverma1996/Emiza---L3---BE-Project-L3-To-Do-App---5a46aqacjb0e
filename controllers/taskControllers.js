@@ -111,8 +111,6 @@ json = {
 
 
 const updateTask = async (req, res) => {
-    
-    const task_id = req.body.task_id;
     //Write your code here.
     const { task_id, heading, description, status } = req.body;
   try {
