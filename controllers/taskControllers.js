@@ -114,6 +114,24 @@ const updateTask = async (req, res) => {
     
     const task_id = req.body.task_id;
     //Write your code here.
+    const { task_id, heading, description, status } = req.body;
+  try {
+    const updatedTask = await Tasks.findByIdAndUpdate(
+      task_id,
+      { heading, description, status },
+      { new: true }
+    );
+
+    res.status(200).json({
+      status: 'success',
+      data: updatedTask
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: 'fail',
+      message: error.message
+    });
+  }
 }
 
 
@@ -154,6 +172,19 @@ const deleteTask = async (req, res) => {
 
     const task_id = req.body.task_id;
     //Write your code here.
+    const { task_id } = req.body;
+  try {
+    await Tasks.findByIdAndDelete(task_id);
+    res.status(200).json({
+      status: 'success',
+      message: 'Task deleted successfully'
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: 'fail',
+      message: error.message
+    });
+  }
 
 }
 
