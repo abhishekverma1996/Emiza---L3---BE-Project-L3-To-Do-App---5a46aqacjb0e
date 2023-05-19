@@ -48,9 +48,20 @@ json =
 async function isowner(req, res, next) {
 
     try {
-        
         //Write your code here.
-
+    const { task_id, token } = req.body;
+    const decoded = jwt.verify(token, JWT_SECRET);
+    if (!decoded) {
+      return res.status(404).json({ status: 'fail', message: 'Invalid token' });
+    }
+    const task = await Tasks.findById(task_id);
+    if (!task) {
+      return res.status(404).json({ status: 'fail', message: 'Given task does not exist' });
+    }
+    if (task.creator_id !== decoded.userId) {
+      return res.status(403).json({ status: 'fail', message: 'Access Denied' });
+    }
+    next();
     } catch (err) {
         return res.status(400).json({
             status: "error",
